@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = "forge"
+            url = "http://files.minecraftforge.net/maven"
+        }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
+        maven {
+            url = 'http://clojars.org/repo'
+        }
+    }
+    dependencies {
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
+        classpath 'clojuresque:clojuresque:1.7.0'
+    }
+}
+
+apply plugin: 'clojure'
+apply plugin: 'forge'
+
+version = "0.1"
+group = "de.ljfa.mineclojure"
+archivesBaseName = "mineclojure"
+
+clojure.warnOnReflection = true
+clojure.aotCompile = true
+
+minecraft {
+    version = "1.7.10-10.13.4.1448-1.7.10"
+    runDir = "run"
+    
+    replaceIn "core.clj"
+    replace "\${version}", project.version
+}
+
+repositories {
+    maven {
+        url = 'http://clojars.org/repo'
+    }
+}
+
+dependencies {
+    compile "org.clojure:clojure:1.7.0"
+}
+
+processResources
+{
+    // this will ensure that this task is redone when the versions change.
+    inputs.property "version", project.version
+    inputs.property "mcversion", project.minecraft.version
+
+    // replace stuff in mcmod.info, nothing else
+    from(sourceSets.main.resources.srcDirs) {
+        include 'mcmod.info'
+
+        // replace version and mcversion
+        expand 'version':project.version, 'mcversion':project.minecraft.version
+    }
+
+    // copy everything else, thats not the mcmod.info
+    from(sourceSets.main.resources.srcDirs) {
+        exclude 'mcmod.info'
+    }
+}

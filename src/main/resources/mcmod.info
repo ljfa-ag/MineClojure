@@ -1,0 +1,16 @@
+[
+{
+  "modid": "mineclojure",
+  "name": "MineClojure",
+  "description": "Ingame Clojure REPL",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["ljfa"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
