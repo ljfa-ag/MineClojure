@@ -12,7 +12,7 @@
 
 (defn -getCommandUsage
   [this sender]
-  "clj <form>")
+  "clj <clojure form>")
 
 (defn send-chat
   [^ICommandSender sender msg]
@@ -26,13 +26,16 @@
 (binding [*ns* repl-ns]
   (use 'clojure.core))
 
+(.setDynamic (intern repl-ns 'me)) ;this gets bound to the command sender
+
 (defn -processCommand
   [this sender args]
   (try
     (as-> args x
       (clojure.string/join " " x)
       (read-string x)
-      (binding [*ns* repl-ns] (eval x))
+      (binding [*ns* repl-ns, mineclj/me sender]
+        (eval x))
       (send-chat sender x))
     (catch Throwable e
       (throw (CommandException. (str e) (into-array []))))))
