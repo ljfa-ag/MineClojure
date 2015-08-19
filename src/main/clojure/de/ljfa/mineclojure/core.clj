@@ -11,7 +11,7 @@
 (def ^:const modname "MineClojure")
 
 (gen-class :name
-  ^{Mod {:modid "mineclojure", :version "${version}"}}
+  ^{Mod {:modid "mineclojure", :version "${version}", :acceptableRemoteVersions "*"}}
   de.ljfa.mineclojure.core
   :methods [[^{Mod$EventHandler {}} init [cpw.mods.fml.common.event.FMLInitializationEvent] void]
             [^{Mod$EventHandler {}} serverStarted [cpw.mods.fml.common.event.FMLServerStartedEvent] void]])
