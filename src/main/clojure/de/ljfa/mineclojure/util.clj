@@ -1,6 +1,7 @@
 (ns de.ljfa.mineclojure.util
   (:import (net.minecraft.command CommandBase ICommandSender CommandException)
-           (net.minecraft.util ChatComponentText))
+           (net.minecraft.util ChatComponentText)
+           (java.io Writer StringWriter))
   (:require [clojure.string :as s]))
 
 (defn send-chat
@@ -23,24 +24,13 @@
     "nil"
     (str x)))
 
-(gen-class
-  :name de.ljfa.mineclojure.util.chat-writer
-  :extends java.io.StringWriter
-  :prefix chat-writer-
-  :state sender
-  :init init
-  :constructors {[net.minecraft.command.ICommandSender] []})
-(import de.ljfa.mineclojure.util.chat-writer)
-
-(defn chat-writer-init
+(defn ^Writer chat-writer
+  "Creates a Writer that writes into the chat of the given command sender"
   [sender]
-  [[] sender])
-
-(defn chat-writer-flush
-  [^chat-writer this]
-  (send-chat-lines (.sender this) (.toString this))
-  (-> this (.getBuffer) (.setLength 0)))
-
-(defn chat-writer-close
-  [^chat-writer this]
-  (.flush this))
+  (proxy [StringWriter] []
+    (flush []
+      (let [^StringWriter this this]
+        (send-chat-lines sender (.toString this))
+        (.setLength (.getBuffer this) 0)))
+    (close []
+      (.flush ^Writer this))))

@@ -1,11 +1,11 @@
 (ns de.ljfa.mineclojure.core
+  (:require de.ljfa.mineclojure.command-clj)
   (:import (cpw.mods.fml.common Mod Mod$EventHandler)
            (cpw.mods.fml.common.event FMLInitializationEvent FMLServerStartedEvent)
            (net.minecraft.server MinecraftServer)
            (net.minecraft.command ServerCommandManager)
            (org.apache.logging.log4j Logger Level)
-           (de.ljfa.mineclojure command-clj))
-  (:require de.ljfa.mineclojure.command-clj))
+           (de.ljfa.mineclojure command-clj)))
 
 (def ^:const modid "mineclojure")
 (def ^:const modversion "${version}")
