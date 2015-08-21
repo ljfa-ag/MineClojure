@@ -1,8 +1,8 @@
 (ns de.ljfa.mineclojure.command-clj
+  (:require [de.ljfa.mineclojure.util :refer :all])
   (:import (net.minecraft.command CommandBase ICommandSender CommandException)
            (net.minecraft.util ChatComponentText)
-           (de.ljfa.mineclojure.util chat-writer))
-  (:require [de.ljfa.mineclojure.util :refer :all]))
+           (de.ljfa.mineclojure.util chat-writer)))
 
 (gen-class
   :name de.ljfa.mineclojure.command-clj
@@ -15,7 +15,8 @@
 (defn -getCommandUsage
   [this sender]
   "clj <clojure form>")
-;Create a custom namespace for the REPL
+
+;Create a custom namespace for the REPL
 (def repl-ns
   (create-ns 'mineclj))
 

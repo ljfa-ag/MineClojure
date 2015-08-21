@@ -30,16 +30,17 @@
   :state sender
   :init init
   :constructors {[net.minecraft.command.ICommandSender] []})
+(import de.ljfa.mineclojure.util.chat-writer)
 
 (defn chat-writer-init
   [sender]
   [[] sender])
 
 (defn chat-writer-flush
-  [this]
+  [^chat-writer this]
   (send-chat-lines (.sender this) (.toString this))
   (-> this (.getBuffer) (.setLength 0)))
 
 (defn chat-writer-close
-  [this]
+  [^chat-writer this]
   (.flush this))
