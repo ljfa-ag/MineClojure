@@ -15,10 +15,23 @@
   "clj <clojure form>")
 
 (defn send-chat
+  "Sends an unlocalized chat message to the sender"
   [^ICommandSender sender msg]
-  (.addChatMessage sender (ChatComponentText. (str msg))))
+  (.addChatMessage sender (ChatComponentText. msg)))
 
-;Create a custom namespace for the REPL
+(defn send-chat-lines
+  "Sends an unlocalized chat message which can contain multiple lines to the sender"
+  [^ICommandSender sender msg]
+  (doseq [line (clojure.string/split msg #"\r?\n")]
+    (send-chat sender line)))
+
+(defn str-nil
+  "Like str, but nil values get converted to \"nil\" rather than an empty string"
+  [x]
+  (if (nil? x)
+    "nil"
+    (str x)))
+;Create a custom namespace for the REPL
 (def repl-ns
   (create-ns 'mineclj))
 
@@ -36,6 +49,6 @@
       (read-string x)
       (binding [*ns* repl-ns, mineclj/me sender]
         (eval x))
-      (send-chat sender x))
+      (send-chat-lines sender (str-nil x)))
     (catch Throwable e
       (throw (CommandException. (str e) (into-array []))))))
