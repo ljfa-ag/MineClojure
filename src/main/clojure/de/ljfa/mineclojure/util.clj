@@ -19,3 +19,24 @@
   (if (nil? x)
     "nil"
     (str x)))
+
+(gen-class
+  :name de.ljfa.mineclojure.util.chat-writer
+  :extends java.io.StringWriter
+  :prefix chat-writer-
+  :state sender
+  :init init
+  :constructors {[net.minecraft.command.ICommandSender] []})
+
+(defn chat-writer-init
+  [sender]
+  [[] sender])
+
+(defn chat-writer-flush
+  [this]
+  (send-chat-lines (.sender this) (.toString this))
+  (-> this (.getBuffer) (.setLength 0)))
+
+(defn chat-writer-close
+  [this]
+  (.flush this))

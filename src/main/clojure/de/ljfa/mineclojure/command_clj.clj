@@ -1,6 +1,7 @@
 (ns de.ljfa.mineclojure.command-clj
   (:import (net.minecraft.command CommandBase ICommandSender CommandException)
-           (net.minecraft.util ChatComponentText))
+           (net.minecraft.util ChatComponentText)
+           (de.ljfa.mineclojure.util chat-writer))
   (:require [de.ljfa.mineclojure.util :refer :all]))
 
 (gen-class
@@ -29,9 +30,9 @@
   (try
     (as-> args x
       (clojure.string/join " " x)
-      (read-string x)
-      (binding [*ns* repl-ns, mineclj/me sender]
-        (eval x))
+      (with-open [wr (chat-writer. sender)]
+        (binding [*ns* repl-ns, *out* wr, mineclj/me sender]
+         (eval (read-string x))))
       (send-chat-lines sender (str-nil x)))
     (catch Throwable e
       (throw (CommandException. (str e) (into-array []))))))

@@ -3,7 +3,8 @@
            (cpw.mods.fml.common.event FMLInitializationEvent FMLServerStartedEvent)
            (net.minecraft.server MinecraftServer)
            (net.minecraft.command ServerCommandManager)
-           (org.apache.logging.log4j Logger Level))
+           (org.apache.logging.log4j Logger Level)
+           (de.ljfa.mineclojure command-clj))
   (:require de.ljfa.mineclojure.command-clj))
 
 (def ^:const modid "mineclojure")
@@ -38,4 +39,4 @@
 (defn -serverStarted
   [this event]
   (let [^ServerCommandManager cmgr (.getCommandManager (MinecraftServer/getServer))]
-    (.registerCommand cmgr (de.ljfa.mineclojure.command-clj.))))
+    (.registerCommand cmgr (command-clj.))))
