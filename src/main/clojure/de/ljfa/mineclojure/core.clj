@@ -4,7 +4,7 @@
            (cpw.mods.fml.common.event FMLInitializationEvent FMLServerStartedEvent)
            (net.minecraft.server MinecraftServer)
            (net.minecraft.command ServerCommandManager)
-           (org.apache.logging.log4j Logger Level)
+           (org.apache.logging.log4j LogManager Logger Level)
            (de.ljfa.mineclojure command-clj)))
 
 (def ^:const modid "mineclojure")
@@ -18,7 +18,7 @@
             [^{Mod$EventHandler {}} serverStarted [cpw.mods.fml.common.event.FMLServerStartedEvent] void]])
 
 (def ^Logger logger
-  (org.apache.logging.log4j.LogManager/getLogger modname))
+  (LogManager/getLogger modname))
 
 (defn log
   "Logs a message. The logging level is given as keyword."
