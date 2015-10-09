@@ -8,7 +8,7 @@
 (def ^Logger logger
   (LogManager/getLogger "MineClojure"))
 
-(defn log4jlvl
+(defn ^Level log4jlvl
   "Converts a keyword (:error, :warn etc.) to a log4j logging level"
   [level]
   (case level
@@ -24,8 +24,8 @@
   "Logs a message with parameters, with the logging level given as keyword"
   ([level str]
     (.log logger (log4jlvl level) str))
-  ([level str & args]
-    (.log logger (log4jlvl level) str (into-array Object args))))
+  ([level ^String str & args]
+    (.log logger (log4jlvl level) str ^"[Ljava.lang.Object;" (into-array Object args))))
 
 (defn send-chat
   "Sends an unlocalized chat message to the sender"
