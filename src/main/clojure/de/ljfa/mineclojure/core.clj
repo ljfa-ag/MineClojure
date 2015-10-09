@@ -1,10 +1,10 @@
 (ns de.ljfa.mineclojure.core
-  (:require de.ljfa.mineclojure.command-clj)
+  (:require de.ljfa.mineclojure.command-clj
+            [de.ljfa.mineclojure.util :refer [log]])
   (:import (cpw.mods.fml.common Mod Mod$EventHandler)
            (cpw.mods.fml.common.event FMLInitializationEvent FMLServerStartedEvent)
            (net.minecraft.server MinecraftServer)
            (net.minecraft.command ServerCommandManager)
-           (org.apache.logging.log4j LogManager Logger Level)
            (de.ljfa.mineclojure command-clj)))
 
 (def ^:const modid "mineclojure")
@@ -16,21 +16,6 @@
   de.ljfa.mineclojure.core
   :methods [[^{Mod$EventHandler {}} init [cpw.mods.fml.common.event.FMLInitializationEvent] void]
             [^{Mod$EventHandler {}} serverStarted [cpw.mods.fml.common.event.FMLServerStartedEvent] void]])
-
-(def ^Logger logger
-  (LogManager/getLogger modname))
-
-(defn log
-  "Logs a message. The logging level is given as keyword."
-  [level str]
-  (let [log4jlvl (case level
-                   :trace Level/TRACE
-                   :debug Level/DEBUG
-                   :info Level/INFO
-                   :warn Level/WARN
-                   :error Level/ERROR
-                   :fatal Level/FATAL)]
-    (.log logger log4jlvl str)))
 
 (defn -init
   [this event]

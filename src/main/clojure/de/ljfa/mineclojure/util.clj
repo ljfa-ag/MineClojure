@@ -1,8 +1,31 @@
 (ns de.ljfa.mineclojure.util
   (:import (net.minecraft.command CommandBase ICommandSender CommandException)
            (net.minecraft.util ChatComponentText)
+           (org.apache.logging.log4j LogManager Logger Level)
            (java.io Writer StringWriter))
   (:require [clojure.string :as s]))
+
+(def ^Logger logger
+  (LogManager/getLogger "MineClojure"))
+
+(defn log4jlvl
+  "Converts a keyword (:error, :warn etc.) to a log4j logging level"
+  [level]
+  (case level
+    :trace Level/TRACE
+    :debug Level/DEBUG
+    :info Level/INFO
+    :warn Level/WARN
+    :error Level/ERROR
+    :fatal Level/FATAL
+    Level/INFO))
+
+(defn log
+  "Logs a message with parameters, with the logging level given as keyword"
+  ([level str]
+    (.log logger (log4jlvl level) str))
+  ([level str & args]
+    (.log logger (log4jlvl level) str (into-array Object args))))
 
 (defn send-chat
   "Sends an unlocalized chat message to the sender"
