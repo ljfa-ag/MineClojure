@@ -36,7 +36,7 @@
   (try
     (let [in-str (clojure.string/join " " args)
           output (with-open [wr (chat-writer sender)]
-                   (binding [*ns* repl-ns, *out* wr, mineclj/me sender,
+                   (binding [*ns* repl-ns, *out* wr, *err* wr, mineclj/me sender,
                              *1 @r1, *2 @r2, *3 @r3, *e @re]
                      (eval (read-string in-str))))]
       (send-chat-lines sender (str-nil output))
