@@ -28,11 +28,10 @@
 (defn -processCommand
   [this sender args]
   (try
-    (as-> args x
-      (clojure.string/join " " x)
-      (with-open [wr (chat-writer sender)]
-        (binding [*ns* repl-ns, *out* wr, mineclj/me sender]
-         (eval (read-string x))))
-      (send-chat-lines sender (str-nil x)))
+    (let [in-str (clojure.string/join " " args)
+          output (with-open [wr (chat-writer sender)]
+                   (binding [*ns* repl-ns, *out* wr, mineclj/me sender]
+                     (eval (read-string in-str))))]
+      (send-chat-lines sender (str-nil output)))
     (catch Throwable e
       (throw (CommandException. (str e) (into-array []))))))
