@@ -3,8 +3,7 @@
            (net.minecraft.util ChatComponentText)
            (org.apache.logging.log4j LogManager Logger Level)
            (java.io Writer StringWriter))
-  (:require [clojure.string :as s]
-            clojure.pprint))
+  (:require [clojure.string :as s]))
 
 (def ^Logger logger
   (LogManager/getLogger "MineClojure"))
@@ -46,7 +45,7 @@
   [x]
   (if (string? x)
     x
-    (clojure.pprint/write x :stream nil)))
+    (pr-str x)))
 
 (defn ^Writer chat-writer
   "Creates a Writer that writes into the chat of the given command sender"
