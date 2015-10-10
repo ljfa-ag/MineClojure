@@ -39,7 +39,7 @@
                    (binding [*ns* repl-ns, *out* wr, *err* wr, mineclj/me sender,
                              *1 @r1, *2 @r2, *3 @r3, *e @re]
                      (eval (read-string in-str))))]
-      (send-chat-lines sender (str-nil output))
+      (send-chat-lines sender (prettyprint output))
       (dosync
         (ref-set r3 @r2)
         (ref-set r2 @r1)

@@ -3,7 +3,8 @@
            (net.minecraft.util ChatComponentText)
            (org.apache.logging.log4j LogManager Logger Level)
            (java.io Writer StringWriter))
-  (:require [clojure.string :as s]))
+  (:require [clojure.string :as s]
+            clojure.pprint))
 
 (def ^Logger logger
   (LogManager/getLogger "MineClojure"))
@@ -40,12 +41,12 @@
       (doseq [line (s/split trmsg #"\r?\n")]
         (send-chat sender line)))))
 
-(defn str-nil
-  "Like str, but nil values get converted to \"nil\" rather than an empty string"
+(defn prettyprint
+  "Formats the argument for REPL output"
   [x]
-  (if (nil? x)
-    "nil"
-    (str x)))
+  (if (string? x)
+    x
+    (clojure.pprint/write x :stream nil)))
 
 (defn ^Writer chat-writer
   "Creates a Writer that writes into the chat of the given command sender"
