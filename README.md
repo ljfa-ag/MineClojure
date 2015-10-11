@@ -14,7 +14,6 @@ Well, you can try the following from within a dev environment for fun
 ```clojure
 /clj (import net.minecraft.init.Blocks)
 /clj (doto Blocks/stone (.setHardness 0.1) (.setLightLevel 0.9))
-/clj (def overw (net.minecraftforge.common.DimensionManager/getWorld 0))
 /clj (.setFire me 3)  ;"me" is bound to the command sender
 ```
 
