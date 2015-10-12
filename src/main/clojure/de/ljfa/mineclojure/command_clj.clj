@@ -26,10 +26,10 @@
 (.setDynamic (intern repl-ns 'me)) ;gets bound to the command sender
 
 ;get bound to *1, *2, *3 and *e
-(def r1 (ref nil))
-(def r2 (ref nil))
-(def r3 (ref nil))
-(def re (ref nil))
+(def r1 (atom nil))
+(def r2 (atom nil))
+(def r3 (atom nil))
+(def re (atom nil))
 
 (defn -processCommand
   [this sender args]
@@ -40,10 +40,9 @@
                              *1 @r1, *2 @r2, *3 @r3, *e @re]
                      (eval (read-string in-str))))]
       (send-chat-lines sender (prettyprint output))
-      (dosync
-        (ref-set r3 @r2)
-        (ref-set r2 @r1)
-        (ref-set r1 output)))
+      (reset! r3 @r2)
+      (reset! r2 @r1)
+      (reset! r1 output))
     (catch Throwable e
-      (dosync (ref-set re e))
+      (reset! re e)
       (throw (CommandException. (str e) (into-array []))))))
